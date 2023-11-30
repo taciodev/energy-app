@@ -17,6 +17,8 @@ model User {
   password_hash String
   created_at    DateTime @default(now())
 
+  electronicDevices ElectronicDevices[]
+
   @@map("users")
 }
 
@@ -24,6 +26,9 @@ model ElectronicDevices {
   id     String @id @default(uuid())
   device String
   watts  Int
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
 
   @@map("electronic_devices")
 }
