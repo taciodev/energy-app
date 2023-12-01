@@ -13,9 +13,7 @@ interface AuthenticateUseCaseResponse {
 };
 
 export class AuthenticateUseCase {
-    constructor(
-        private usersRepository: UsersRepository,
-    ) {}
+    constructor(private usersRepository: UsersRepository) {}
 
     async execute({ email, password }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
         const user = await this.usersRepository.findByEmail(email);
@@ -25,11 +23,13 @@ export class AuthenticateUseCase {
         }
 
         const doesPasswordMatch = await compare(password, user.password_hash);
-
+        
         if (!doesPasswordMatch) {
             throw new InvalidCredentialsError();
         }
 
-        return { user };
+        return { 
+            user 
+        };
     }
 }
